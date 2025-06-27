@@ -2,35 +2,56 @@
 <html>
   <head>
     <title>Juego RA: Poema de Rubén Darío</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      #aviso {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 1em;
+        background: #111;
+        color: #fff;
+        text-align: center;
+        z-index: 9999;
+        font-family: sans-serif;
+      }
+    </style>
     <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden;">
- 
-    <a-scene embedded arjs="sourceType: webcam;">
-      <!-- Cámara y marcador personalizado -->
-      <a-marker type="pattern" url="/pattern-ccc(2).patt" id="marcador">
-        <!-- Objeto 3D visible al escanear -->
-        <a-sphere position="0 0.5 0" radius="0.3" color="#FFD700" id="esfera"></a-sphere>
 
-        <!-- Texto oculto que aparece al hacer clic -->
-        <a-entity id="verso" visible="false"
-                  position="0 0.8 0"
-                  text="value: 'Juventud, divino tesoro...'; color: #FFFFFF; align: center;">
-        </a-entity>
+    <div id="aviso">
+      Este sitio usará tu cámara para activar la experiencia RA.  
+      Por favor, acepta el permiso cuando se solicite.
+    </div>
+
+    <a-scene embedded arjs="sourceType: webcam;" vr-mode-ui="enabled: false" loading-screen="enabled: false">
+      <a-marker type="pattern" url="marcador.patt" id="marcador">
+        <a-sphere id="esfera" position="0 0.5 0" radius="0.3" color="#FFD700"></a-sphere>
+        <a-entity id="verso" visible="false" position="0 1 0"
+                  text="value: Juventud, divino tesoro...; color: white; align: center;"></a-entity>
       </a-marker>
-
-      <!-- Cámara -->
       <a-entity camera></a-entity>
     </a-scene>
 
     <script>
       const esfera = document.getElementById("esfera");
       const verso = document.getElementById("verso");
+      const aviso = document.getElementById("aviso");
 
       esfera.addEventListener("click", () => {
         verso.setAttribute("visible", true);
       });
+
+      // Oculta el aviso después de unos segundos
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          aviso.style.display = "none";
+        }, 5000); // Puedes ajustar el tiempo si deseas
+      });
     </script>
   </body>
 </html>
+
